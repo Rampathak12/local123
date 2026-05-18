@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Product List</title>
+
+  <style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f7fc;
+        padding: 30px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .subtitle{
+        text-align:center;
+        margin-bottom:20px;
+        color:#666;
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items:center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        transition: 0.3s;
+        display:inline-block;
+    }
+
+    .home-btn { background: #6c63ff; }
+    .add-btn { background: #28a745; }
+    .reset-btn { background: #ff9800; }
+
+    .home-btn:hover { background: #5145cd; }
+    .add-btn:hover { background: #1f7d36; }
+    .reset-btn:hover { background: #e68900; }
+
+    .search-box {
+        display:flex;
+        gap:10px;
+        margin-bottom:20px;
+    }
+
+    .search-box input {
+        flex:1;
+        padding:12px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        outline:none;
+    }
+
+    .search-box button {
+        padding:12px 18px;
+        border:none;
+        border-radius:8px;
+        background:#ff9800;
+        color:white;
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    .search-box button:hover {
+        background:#e68900;
+    }
+
+    .count {
+        margin-bottom: 15px;
+        color: #555;
+        font-weight: 500;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow:hidden;
+        border-radius:10px;
+    }
+
+    thead {
+        background: linear-gradient(90deg,#6c63ff,#5a54d1);
+        color: white;
+    }
+
+    th, td {
+        padding: 14px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    tbody tr:hover {
+        background: #f8f9ff;
+    }
+
+    img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .no-img{
+        color:#aaa;
+        font-size:12px;
+    }
+
+    .action a {
+        margin: 3px;
+        padding: 7px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        display:inline-block;
+    }
+
+    .view { background: #17a2b8; }
+    .edit { background: #28a745; }
+    .delete { background: #dc3545; }
+
+    .view:hover { background:#117a8b; }
+    .edit:hover { background:#1e7e34; }
+    .delete:hover { background:#b21f2d; }
+
+    .empty {
+        text-align:center;
+        padding:25px;
+        color:#999;
+        font-size:18px;
+    }
+
+    @media(max-width:768px){
+        .top-bar{ flex-direction:column; }
+        th,td{ padding:10px; font-size:14px; }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🛍 Product Management</h1>
+
+  <div class="subtitle">
+    Manage your products efficiently
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+
+    <a th:href="@{/}" class="btn home-btn">
+      Home
+    </a>
+
+    <a th:href="@{/products/new}" class="btn add-btn">
+      + Add Product
+    </a>
+
+    <a th:href="@{/products}" class="btn reset-btn">
+      Reset
+    </a>
+
+  </div>
+
+  <!-- SEARCH -->
+  <form th:action="@{/products/search}"
+        method="get"
+        class="search-box">
+
+    <input type="text"
+           name="keyword"
+           placeholder="Search product by name...">
+
+    <button type="submit">
+      Search
+    </button>
+
+  </form>
+
+  <!-- SEARCH RESULT INFO -->
+  <div class="count">
+    Total Products :
+    <span th:text="${#lists.size(products)}"></span>
+  </div>
+
+  <!-- TABLE -->
+  <table>
+
+    <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Details</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <!-- EMPTY -->
+    <tr th:if="${#lists.isEmpty(products)}">
+      <td colspan="6" class="empty">
+        No Products Found 😢
+      </td>
+    </tr>
+
+    <!-- LOOP -->
+    <tr th:each="p : ${products}">
+
+      <!-- IMAGE -->
+      <td>
+        <img th:if="${p.imagename != null}"
+             th:src="@{'/uploads/' + ${p.imagename}}">
+
+        <span th:if="${p.imagename == null}" class="no-img">
+          No Image
+        </span>
+      </td>
+
+      <!-- NAME -->
+      <td th:text="${p.name}"></td>
+
+      <!-- PRICE -->
+      <td>₹ <span th:text="${p.price}"></span></td>
+
+      <!-- STOCK -->
+      <td th:text="${p.stock}"></td>
+
+      <!-- DETAILS -->
+      <td th:text="${p.details}"></td>
+
+      <!-- ACTIONS -->
+      <td class="action">
+
+        <a th:href="@{'/products/view/' + ${p.id}}"
+           class="view">View</a>
+
+        <a th:href="@{'/products/edit/' + ${p.id}}"
+           class="edit">Edit</a>
+
+        <a th:href="@{'/products/delete/' + ${p.id}}"
+           class="delete"
+           onclick="return confirm('Delete this product?')">
+          Delete
+        </a>
+
+      </td>
+
+    </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+</body>
+</html>

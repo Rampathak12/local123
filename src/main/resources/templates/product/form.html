@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Add Product</title>
+
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #74ebd5, #9face6);
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 420px;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #6c63ff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #574b90;
+    }
+
+    .back {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        text-decoration: none;
+        color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2 th:text="${pageTitle}">Add Product</h2>
+
+  <form th:action="${product.id == null} ? @{/products/save} : @{/products/update/{id}(id=${product.id})}"
+        th:object="${product}"
+        method="post"
+        enctype="multipart/form-data">
+
+    <input type="text" th:field="*{name}" placeholder="Product Name" required>
+
+    <input type="number" th:field="*{price}" placeholder="Price" required>
+
+    <input type="number" th:field="*{stock}" placeholder="Stock" required>
+
+    <textarea th:field="*{details}" placeholder="Product Details"></textarea>
+
+    <input type="file" name="imageFile">
+
+    <button type="submit">Save Product</button>
+
+  </form>
+
+  <a th:href="@{/products}" class="back">← Back to Products</a>
+
+</div>
+
+</body>
+</html>

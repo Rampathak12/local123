@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .search-box{
+            margin-top:20px;
+            display:flex;
+            justify-content:center;
+            gap:10px;
+        }
+
+        .search-box input{
+            padding:10px;
+            width:250px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            outline:none;
+        }
+
+        .search-box button{
+            padding:10px 15px;
+            border:none;
+            border-radius:8px;
+            background:#ff9800;
+            color:white;
+            cursor:pointer;
+        }
+
+        .search-box button:hover{
+            background:#e68900;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container center">
+
+    <h1>Product Mgt</h1>
+    <p>Spring Boot + JPA + Thymeleaf</p>
+
+    <!-- NAVIGATION -->
+    <a class="btn" th:href="@{/products}">Product List</a>
+    <a class="btn" th:href="@{/products/new}">Add Product</a>
+
+    <!-- SEARCH -->
+    <form class="search-box"
+          th:action="@{/products/search}"
+          method="get">
+
+        <input type="text"
+               name="keyword"
+               placeholder="Enter product name"
+               required>
+
+        <button type="submit">
+            Search Product
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
