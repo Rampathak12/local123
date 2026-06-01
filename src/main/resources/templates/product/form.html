@@ -3,92 +3,70 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Add Product</title>
-
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #74ebd5, #9face6);
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .card {
-        width: 420px;
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-
-    h2 {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-
-    input, textarea {
-        width: 100%;
-        padding: 10px;
-        margin: 8px 0;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-
-    button {
-        width: 100%;
-        padding: 10px;
-        background: #6c63ff;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background: #574b90;
-    }
-
-    .back {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
-        text-decoration: none;
-        color: #555;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${pageTitle}">Product Form</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 
 <body>
+<main class="page">
+  <nav class="site-nav">
+    <a class="brand" th:href="@{/}">ProductPro</a>
+    <div class="nav-links">
+      <a th:href="@{/products}">Products</a>
+      <a th:href="@{/products/new}">Add Product</a>
+    </div>
+  </nav>
 
-<div class="card">
+  <section class="shell form-card">
+    <header class="header">
+      <div>
+        <h1 th:text="${pageTitle}">Add Product</h1>
+        <p>Enter product information and upload an image.</p>
+      </div>
+    </header>
 
-  <h2 th:text="${pageTitle}">Add Product</h2>
+    <div class="content">
+      <form class="form-grid"
+            th:action="${product.id == null} ? @{/products/save} : @{/products/update/{id}(id=${product.id})}"
+            th:object="${product}"
+            method="post"
+            enctype="multipart/form-data">
 
-  <form th:action="${product.id == null} ? @{/products/save} : @{/products/update/{id}(id=${product.id})}"
-        th:object="${product}"
-        method="post"
-        enctype="multipart/form-data">
+        <div class="field">
+          <label for="name">Product Name</label>
+          <input id="name" type="text" th:field="*{name}" placeholder="Product name" required>
+        </div>
 
-    <input type="text" th:field="*{name}" placeholder="Product Name" required>
+        <div class="field-pair">
+          <div class="field">
+            <label for="price">Price</label>
+            <input id="price" type="number" step="0.01" min="0" th:field="*{price}" placeholder="0.00" required>
+          </div>
 
-    <input type="number" th:field="*{price}" placeholder="Price" required>
+          <div class="field">
+            <label for="stock">Stock</label>
+            <input id="stock" type="number" min="0" th:field="*{stock}" placeholder="0" required>
+          </div>
+        </div>
 
-    <input type="number" th:field="*{stock}" placeholder="Stock" required>
+        <div class="field">
+          <label for="details">Details</label>
+          <textarea id="details" th:field="*{details}" placeholder="Product details"></textarea>
+        </div>
 
-    <textarea th:field="*{details}" placeholder="Product Details"></textarea>
+        <div class="field">
+          <label for="imageFile">Product Image</label>
+          <input id="imageFile" type="file" name="imageFile" accept="image/*">
+        </div>
 
-    <input type="file" name="imageFile">
-
-    <button type="submit">Save Product</button>
-
-  </form>
-
-  <a th:href="@{/products}" class="back">← Back to Products</a>
-
-</div>
-
+        <div class="button-row">
+          <button type="submit">Save Product</button>
+          <a th:href="@{/products}" class="btn secondary">Back to Products</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
 </body>
 </html>

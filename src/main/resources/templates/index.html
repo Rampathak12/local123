@@ -3,70 +3,38 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management</title>
-
-    <link rel="stylesheet" href="/css/style.css">
-
-    <style>
-        .search-box{
-            margin-top:20px;
-            display:flex;
-            justify-content:center;
-            gap:10px;
-        }
-
-        .search-box input{
-            padding:10px;
-            width:250px;
-            border:1px solid #ccc;
-            border-radius:8px;
-            outline:none;
-        }
-
-        .search-box button{
-            padding:10px 15px;
-            border:none;
-            border-radius:8px;
-            background:#ff9800;
-            color:white;
-            cursor:pointer;
-        }
-
-        .search-box button:hover{
-            background:#e68900;
-        }
-    </style>
-
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 
 <body>
+<main class="page">
+    <nav class="site-nav">
+        <a class="brand" th:href="@{/}">ProductPro</a>
+        <div class="nav-links">
+            <a th:href="@{/products}">Products</a>
+            <a th:href="@{/products/new}">Add Product</a>
+        </div>
+    </nav>
 
-<div class="container center">
+    <section class="shell hero hero-home">
+        <div class="hero-main">
+            <div class="eyebrow">Inventory workspace</div>
+            <h1>Product Management</h1>
+            <p>Manage product details, stock levels, prices, and images from one focused dashboard.</p>
 
-    <h1>Product Mgt</h1>
-    <p>Spring Boot + JPA + Thymeleaf</p>
+            <div class="actions">
+                <a class="btn" th:href="@{/products}">View Products</a>
+                <a class="btn secondary" th:href="@{/products/new}">Add Product</a>
+            </div>
 
-    <!-- NAVIGATION -->
-    <a class="btn" th:href="@{/products}">Product List</a>
-    <a class="btn" th:href="@{/products/new}">Add Product</a>
-
-    <!-- SEARCH -->
-    <form class="search-box"
-          th:action="@{/products/search}"
-          method="get">
-
-        <input type="text"
-               name="keyword"
-               placeholder="Enter product name"
-               required>
-
-        <button type="submit">
-            Search Product
-        </button>
-
-    </form>
-
-</div>
-
+            <form class="search" th:action="@{/products/search}" method="get">
+                <input type="text" name="keyword" placeholder="Search by product name" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </section>
+</main>
 </body>
 </html>

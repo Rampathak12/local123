@@ -3,105 +3,71 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Product</title>
-
-  <style>
-
-    body{
-        font-family:Arial,sans-serif;
-        background:#f4f6f9;
-        padding:40px;
-    }
-
-    .card{
-        max-width:700px;
-        margin:auto;
-        background:white;
-        padding:25px;
-        border-radius:12px;
-        box-shadow:0 8px 20px rgba(0,0,0,0.1);
-    }
-
-    h1{
-        text-align:center;
-        margin-bottom:20px;
-    }
-
-    img{
-        width:250px;
-        height:250px;
-        object-fit:cover;
-        border-radius:10px;
-        display:block;
-        margin:auto;
-    }
-
-    .info{
-        margin-top:20px;
-    }
-
-    .info p{
-        font-size:18px;
-        margin:10px 0;
-    }
-
-    .btn{
-        display:inline-block;
-        margin-top:20px;
-        padding:10px 16px;
-        background:#6c63ff;
-        color:white;
-        text-decoration:none;
-        border-radius:8px;
-    }
-
-    .btn:hover{
-        background:#5145cd;
-    }
-
-  </style>
-
+  <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 
 <body>
+<main class="page">
+  <nav class="site-nav">
+    <a class="brand" th:href="@{/}">ProductPro</a>
+    <div class="nav-links">
+      <a th:href="@{/products}">Products</a>
+      <a th:href="@{/products/new}">Add Product</a>
+    </div>
+  </nav>
 
-<div class="card">
+  <section class="shell">
+    <header class="header">
+      <div>
+        <h1>Product Details</h1>
+        <p th:text="${product.name}">Product name</p>
+      </div>
 
-  <h1>Product Details</h1>
+      <div class="actions">
+        <a th:href="@{/products}" class="btn secondary">Back</a>
+        <a th:href="@{'/products/edit/' + ${product.id}}" class="btn warning">Edit</a>
+      </div>
+    </header>
 
-  <!-- IMAGE -->
-  <img th:if="${product.imagename != null}"
-       th:src="@{'/uploads/' + ${product.imagename}}">
+    <div class="content">
+      <div class="detail-grid">
+        <div class="detail-media-card">
+          <img class="detail-img"
+               th:if="${product.imagename != null}"
+               th:src="@{'/uploads/' + ${product.imagename}}"
+               alt="Product image">
 
-  <div class="info">
+          <div th:if="${product.imagename == null}" class="detail-img no-img">No image</div>
+        </div>
 
-    <p>
-      <strong>Name :</strong>
-      <span th:text="${product.name}"></span>
-    </p>
+        <div class="detail-list">
+          <div class="detail-item">
+            <span>Name</span>
+            <strong th:text="${product.name}">Product name</strong>
+          </div>
 
-    <p>
-      <strong>Price :</strong>
-      ₹ <span th:text="${product.price}"></span>
-    </p>
+          <div class="detail-item">
+            <span>Price</span>
+            <strong>
+              $<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}">0.00</span>
+            </strong>
+          </div>
 
-    <p>
-      <strong>Stock :</strong>
-      <span th:text="${product.stock}"></span>
-    </p>
+          <div class="detail-item">
+            <span>Stock</span>
+            <strong th:text="${product.stock}">0</strong>
+          </div>
 
-    <p>
-      <strong>Details :</strong>
-      <span th:text="${product.details}"></span>
-    </p>
-
-  </div>
-
-  <a th:href="@{/products}" class="btn">
-    Back
-  </a>
-
-</div>
-
+          <div class="detail-item">
+            <span>Details</span>
+            <strong th:text="${product.details}">Details</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 </body>
 </html>
