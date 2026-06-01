@@ -5,4 +5,11 @@ services:
     healthCheckPath: /
     envVars:
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: productjpa-db
+          property: connectionString
+
+databases:
+  - name: productjpa-db
+    databaseName: productdb
+    user: productjpa
