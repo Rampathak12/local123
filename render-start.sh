@@ -2,8 +2,12 @@
 set -eu
 
 if [ -z "${DATABASE_URL:-}" ]; then
-  echo "DATABASE_URL is not set. Add Render's Internal Database URL to the DATABASE_URL environment variable." >&2
-  exit 1
+  echo "DATABASE_URL is not set. Starting with temporary H2 storage." >&2
+  exec java -jar /app/app.jar \
+    --spring.datasource.url="jdbc:h2:file:/tmp/productdb" \
+    --spring.datasource.username="sa" \
+    --spring.datasource.password="" \
+    --spring.datasource.driver-class-name="org.h2.Driver"
 fi
 
 url_without_scheme="${DATABASE_URL#postgresql://}"
